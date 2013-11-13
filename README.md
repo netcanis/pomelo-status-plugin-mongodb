@@ -4,8 +4,10 @@ pomelo-status-plugin-mongodb
 Modify original pomelo-status-plugin:
 
 1, use mongodb to save user information with more attributes
+
 2, can push message by organization or group
-3, based on mongodb document saving, can easily extend more function.
+
+3, based on mongodb document saving, can easily extend more function
 
 pomelo-status-plugin is a plugin for pomelo, it can be used in pomelo(>=0.6).
 
@@ -20,26 +22,28 @@ npm install pomelo-status-plugin
 ##Usage
 
 ```
-var status = require('pomelo-status-plugin');
+var status = require('pomelo-status-plugin-mongodb');
 
 app.use(status, {status: {
-  host: '127.0.0.1',
-  port: 6379
+  dbHost:"127.0.0.1",
+  dbPort:27017,
+  dbName:"test",
+  dbUser:"testuser",
+  dbPassword:"123"
 }});
 
 ```
 
+##modify support org and groups
+in StatusService.prototype.on_bind_session
+
+```
+  userInfoObj.orgs = [{orgId:"o1"}, {orgId:"o2"}];//TODO: get orgs by your business
+  userInfoObj.groups = [{groupId:"g1"}, {groupId:"g2"}];//TODO: get groups by your business
+
+```
+
 ##API
-
-###getSidsByUid(uid, cb)
-get frontend server id by user id
-####Arguments
-+ uid - user id
-+ cb - callback function
-
-####Return
-+ err - error
-+ list - array of frontend server ids
 
 ###pushByUids(uids, route, msg, cb)
 ####Arguments
@@ -52,18 +56,23 @@ get frontend server id by user id
 + err - error
 + fails - array of failed to send user ids
 
-##Notice
+###pushByOrg(orgId, route, msg, cb)
+####Arguments
++ orgId - organization id
++ route - route string
++ msg - messages would be sent to clients
++ cb - callback function
 
-status plugin use redis as a default persistent storage, you can change it with your own implementation. 
+####Return
++ err - error
 
-```
-var status = require('pomelo-status-plugin');
-var mysqlStatusManager = require('./mysqlStatusManager');
+###pushByGroup(groupId, route, msg, cb)
+####Arguments
++ groupId - group id
++ route - route string
++ msg - messages would be sent to clients
++ cb - callback function
 
-app.use(status, {status: {
-  host: '127.0.0.1',
-  port: 6379,
-  channelManager: mysqlStatusManager
-}});
+####Return
++ err - error
 
-```
