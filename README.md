@@ -1,5 +1,11 @@
-pomelo-status-plugin
+pomelo-status-plugin-mongodb
 ====================
+
+Modify original pomelo-status-plugin:
+
+1, use mongodb to save user information with more attributes
+2, can push message by organization or group
+3, based on mongodb document saving, can easily extend more function.
 
 pomelo-status-plugin is a plugin for pomelo, it can be used in pomelo(>=0.6).
 
